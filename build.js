@@ -14,9 +14,12 @@ const templates = {
 
 function buildPage(contentFile) {
     const contentMarkdown = fs.readFileSync(path.join(srcDir, 'content', contentFile), 'utf-8');
+    console.log('Markdown content:', contentMarkdown);
     const contentHtml = marked.parse(contentMarkdown);
+    console.log('HTML content:', contentHtml);
     const frontMatterMatch = contentMarkdown.match(/---\n([\s\S]+?)\n---/);
     const frontMatter = frontMatterMatch ? frontMatterMatch[1] : '';
+    console.log('Front matter:', frontMatter);
     const titleMatch = frontMatter.match(/title:\s*(.+)/);
     const title = titleMatch ? titleMatch[1] : 'No Title';
 
@@ -27,6 +30,7 @@ function buildPage(contentFile) {
         header: templates.header,
         footer: templates.footer,
     });
+    console.log('Rendered HTML:', html);
 
     const outputFileName = contentFile.replace('.md', '.html');
     fs.writeFileSync(path.join(publicDir, outputFileName), html);
